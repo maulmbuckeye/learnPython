@@ -1,0 +1,5 @@
+John Brown,12.54
+Agatha Christie,25.61
+Rose White,15.90
+John Thomas,4.51
+Paul Martin,20.23

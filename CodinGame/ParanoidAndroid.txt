@@ -1,0 +1,73 @@
+import sys
+import math
+
+def directionToGo(clone_pos,goal_pos) :
+    if clone_pos == goal_pos :
+        return "continue"
+    elif clone_pos < goal_pos :
+        return "RIGHT"
+    else :
+        return "LEFT"
+
+# nb_floors: number of floors
+# width: width of the area
+# nb_rounds: maximum number of rounds
+# exit_floor: floor on which the exit is found
+# exit_pos: position of the exit on its floor
+# nb_total_clones: number of generated clones
+# nb_additional_elevators: ignore (always zero)
+# nb_elevators: number of elevators
+posOfElevatorOnFloor = {}
+nb_floors, width, nb_rounds, exit_floor, exit_pos, nb_total_clones, nb_additional_elevators, nb_elevators = [int(i) for i in input().split()]
+for i in range(nb_elevators):
+    # elevator_floor: floor on which this elevator is found
+    # elevator_pos: position of the elevator on its floor
+    elevator_floor, elevator_pos = [int(j) for j in input().split()]
+    posOfElevatorOnFloor[elevator_floor] = elevator_pos
+    
+print(posOfElevatorOnFloor, file=sys.stderr)
+
+BlockNextTurn = False
+# game loop
+turn = 0
+floorHasBlock= [False for i in range(nb_floors)]
+while 1:
+    turn += 1
+    # clone_floor: floor of the leading clone
+    # clone_pos: position of the leading clone on its floor
+    # direction: direction of the leading clone: LEFT or RIGHT
+    clone_floor, clone_pos, direction = input().split()
+    clone_floor = int(clone_floor)
+    clone_pos = int(clone_pos)
+
+    # Write an action using print
+    # To debug: print("Debug messages...", file=sys.stderr)
+
+    
+    if floorHasBlock[clone_floor] or clone_floor < 0 :
+       print("WAIT")
+    elif BlockNextTurn :
+        print("BLOCK")
+        floorHasBlock[clone_floor] = True
+        BlockNextTurn = False
+    elif clone_floor > 1 and clone_pos == posOfElevatorOnFloor[clone_floor-1] :
+        print("WAIT")
+    elif clone_floor != exit_floor and clone_pos == posOfElevatorOnFloor[clone_floor] :
+        print("WAIT")
+    else :
+        if clone_floor == exit_floor :
+            goal_pos = exit_pos
+        else :
+            print(clone_floor,posOfElevatorOnFloor,file=sys.stderr)
+            goal_pos = posOfElevatorOnFloor[clone_floor]
+        directionForTurn = directionToGo(clone_pos,goal_pos)
+        if direction == directionForTurn  :
+            print("WAIT")
+        elif directionForTurn == "continue" :
+            print("WAIT")
+            BlockNextTurn = True
+        else :    
+            print ("BLOCK")
+            floorHasBlock[clone_floor] = True
+    
+        

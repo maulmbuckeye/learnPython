@@ -1,0 +1,36 @@
+import sys
+import math
+
+# Auto-generated code below aims at helping you parse
+# the standard input according to the problem statement.
+
+n = int(input())
+vs = []
+vs = [int(j) for j in input().split()]
+
+best_price = vs[0]
+worst_price = vs[n-1]
+best_price_to_date = [best_price for j in range(n)]
+worst_price_to_date = [worst_price for  j in range(n)]
+for i in range(n) :
+
+    best_price = max(best_price,vs[i])
+    best_price_to_date[i] = best_price
+    
+    reverse_i = n - i -1
+    worst_price = min(worst_price,vs[reverse_i])
+    worst_price_to_date[reverse_i] = worst_price
+
+biggest_loss = 0
+for i in range(n) :
+    loss = min(0, worst_price_to_date[i] - best_price_to_date[i])
+    biggest_loss = min(biggest_loss,loss)
+    
+print(best_price_to_date,file=sys.stderr)
+print(worst_price_to_date,file=sys.stderr)
+    
+
+# Write an action using print
+# To debug: print("Debug messages...", file=sys.stderr)
+
+print(biggest_loss)
